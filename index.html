@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameZone Elite</title>
+    <style>
+        :root {
+            --primary: #7209b7;
+            --secondary: #4cc9f0;
+            --dark: #121212;
+            --light: #f8f9fa;
+            --accent: #f72585;
+            --bg-gradient: linear-gradient(135deg, #121212 0%, #1a1a2e 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: var(--bg-gradient);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/api/placeholder/1920/1080') center/cover no-repeat;
+            filter: brightness(0.4);
+            z-index: -1;
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 0 1rem;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            padding: 0.8rem 2rem;
+            background: var(--accent);
+            color: var(--light);
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(247, 37, 133, 0.3);
+        }
+        
+        .featured-games {
+            padding: 6rem 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--light);
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(76, 201, 240, 0.3);
+        }
+        
+        .game-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .game-details {
+            padding: 1.5rem;
+        }
+        
+        .game-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .game-category {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .game-desc {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(248, 249, 250, 0.8);
+        }
+        
+        .rating {
+            display: flex;
+            margin-top: 1rem;
+            color: #ffd700;
+        }
+        
+        .newsletter {
+            background: rgba(114, 9, 183, 0.1);
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 600px;
+            margin: 2rem auto 0;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border-radius: 5px 0 0 5px;
+        }
+        
+        .newsletter-btn {
+            padding: 1rem 2rem;
+            background: var(--secondary);
+            color: var(--dark);
+            border: none;
+            border-radius: 0 5px 5px 0;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        footer {
+            background: rgba(18, 18, 18, 0.9);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-link {
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-link:hover {
+            color: var(--accent);
+        }
+        
+        .footer-text {
+            color: rgba(248, 249, 250, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">GameZone Elite</div>
+        <div class="nav-links">
+            <a href="#home">Inicio</a>
+            <a href="#games">Juegos</a>
+            <a href="#news">Noticias</a>
+            <a href="#reviews">Reseñas</a>
+            <a href="#contact">Contacto</a>
+        </div>
+    </nav>
+    
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">El Universo de los Videojuegos</h1>
+            <p class="hero-subtitle">Descubre los mejores títulos, noticias y reseñas del mundo gamer</p>
+            <button class="btn">Explorar Juegos</button>
+        </div>
+    </section>
+    
+    <section class="featured-games" id="games">
+        <h2 class="section-title">Juegos Destacados</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="/api/placeholder/400/200" alt="Juego 1" class="game-img">
+                <div class="game-details">
+                    <h3 class="game-title">Cyber Odyssey 2077</h3>
+                    <p class="game-category">RPG / Mundo Abierto</p>
+                    <p class="game-desc">Un épico viaje futurista donde las decisiones que tomes alterarán el destino de la humanidad.</p>
+                    <div class="rating">★★★★★</div>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <img src="/api/placeholder/400/200" alt="Juego 2" class="game-img">
+                <div class="game-details">
+                    <h3 class="game-title">Legends of Elyria</h3>
+                    <p class="game-category">MMORPG / Fantasía</p>
+                    <p class="game-desc">Explora un vasto mundo mágico lleno de criaturas míticas y épicas aventuras.</p>
+                    <div class="rating">★★★★☆</div>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <img src="/api/placeholder/400/200" alt="Juego 3" class="game-img">
+                <div class="game-details">
+                    <h3 class="game-title">Apex Warlords</h3>
+                    <p class="game-category">Battle Royale / FPS</p>
+                    <p class="game-desc">Compite contra los mejores jugadores del mundo en intensas batallas por la supremacía.</p>
+                    <div class="rating">★★★★★</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="newsletter">
+        <h2 class="section-title">Mantente Actualizado</h2>
+        <p>Suscríbete a nuestro boletín para recibir las últimas noticias y ofertas exclusivas</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Tu correo electrónico" class="newsletter-input" required>
+            <button type="submit" class="newsletter-btn">Suscribirse</button>
+        </form>
+    </section>
+    
+    <footer>
+        <div class="social-links">
+            <a href="#" class="social-link">📱</a>
+            <a href="#" class="social-link">🎮</a>
+            <a href="#" class="social-link">📺</a>
+            <a href="#" class="social-link">🎯</a>
+        </div>
+        <p class="footer-text">© 2025 GameZone Elite. Todos los derechos reservados.</p>
+    </footer>
+    
+    <script>
+        // Animación de aparición al scroll
+        window.addEventListener('scroll', function() {
+            const gameCards = document.querySelectorAll('.game-card');
+            gameCards.forEach(card => {
+                const cardPosition = card.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (cardPosition < screenPosition) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
+        
+        // Efecto de navegación
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                window.scrollTo({
+                    top: targetSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Efecto de hover en las tarjetas de juegos
+        const gameCards = document.querySelectorAll('.game-card');
+        gameCards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            
+            card.addEventListener('mouseenter', function() {
+                const gameTitle = this.querySelector('.game-title');
+                gameTitle.style.color = '#4cc9f0';
+                gameTitle.style.transition = 'color 0.3s ease';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                const gameTitle = this.querySelector('.game-title');
+                gameTitle.style.color = '#f8f9fa';
+            });
+        });
+        
+        // Animación del botón de explorar
+        const exploreBtn = document.querySelector('.btn');
+        exploreBtn.addEventListener('click', function() {
+            const gamesSection = document.querySelector('#games');
+            window.scrollTo({
+                top: gamesSection.offsetTop - 80,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
